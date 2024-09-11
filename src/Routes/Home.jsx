@@ -1,17 +1,33 @@
-import React from 'react'
-import Card from '../Components/Card'
+import React, { useEffect, useContext } from "react";
+import Card from "../Components/Card";
+import { ContextGlobal } from "../Components/utils/global.context";
 
-//Este componente debera ser estilado como "dark" o "light" dependiendo del theme del Context
+function Home() {
+  const { state, setDentists } = useContext(ContextGlobal);
+  const { theme } = state;
 
-const Home = () => {
+  useEffect(() => {
+    if (state.dentists.length === 0) {
+      fetch("https://jsonplaceholder.typicode.com/users")
+        .then((response) => response.json())
+        .then((data) => setDentists(data))
+        .catch((error) =>
+          console.error("Error al obtener los dentistas:", error)
+        );
+    }
+  }, [setDentists, state.dentists]);
+
   return (
-    <main className="" >
-      <h1>Home</h1>
-      <div className='card-grid'>
-        {/* Aqui deberias renderizar las cards */}
-      </div>
-    </main>
-  )
+    <div
+      className={`flex w-full min-h-[89.8vh] flex-wrap gap-4 justify-center items-center p-4 ${
+        theme === "dark" ? "bg-gray-600 text-white" : "bg-white text-black"
+      } `}
+    >
+      {state.dentists.map((dentist) => (
+        <Card key={dentist.id} dentist={dentist} />
+      ))}
+    </div>
+  );
 }
 
-export default Home
+export default Home;

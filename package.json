@@ -37,6 +37,7 @@
     ]
   },
   "devDependencies": {
-    "msw": "^0.47.3"
+    "msw": "^0.47.3",
+    "tailwindcss": "^3.4.10"
   }
 }
